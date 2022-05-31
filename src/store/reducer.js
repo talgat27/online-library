@@ -1,7 +1,8 @@
 import * as actions from './actionTypes';
 
 const initialState = {
-  books: []
+  books: [],
+  wishList: []
 };
 
 

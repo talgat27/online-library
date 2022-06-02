@@ -1,14 +1,14 @@
 import React from "react";
 import { Form, Input, Button, Select } from 'antd';
 import 'antd/dist/antd.css';
-import './BookForm.css'
-import { useDispatch} from 'react-redux';
+import './BookForm.scss'
+import { useDispatch } from 'react-redux';
 import { addBook } from "../../store/actions";
 import { v4 as uuid } from 'uuid';
 
 const { Option } = Select;
 
-function BookForm() {
+export default function BookForm() {
     const dispatch = useDispatch();
 
     const onFinish = (values) => {
@@ -30,10 +30,10 @@ function BookForm() {
     };
 
     return (
-        <div>
+        <div className="form-container">
             <h1>Book Form</h1>
             <Form
-                className="form"
+            className="form"
                 name="basic"
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 16 }}
@@ -69,7 +69,7 @@ function BookForm() {
                     ]}
                 >
                     <Select
-                        placeholder="Select a genre"
+                        placeholder="Select a genre!"
                     >
                         <Option value="classics">classics</Option>
                         <Option value="fantasy">fantasy</Option>
@@ -86,14 +86,15 @@ function BookForm() {
                     <Input />
                 </Form.Item>
 
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Form.Item className="form-btn-container" wrapperCol={{ offset: 8, span: 16 }}>
                     <Button type="primary" htmlType="submit">
-                        Submit
+                        Add
+                    </Button>{' '}{' '}
+                    <Button type="primary" htmlType="submit">
+                        Edit
                     </Button>
                 </Form.Item>
             </Form>
         </div>
     )
 }
-
-export default BookForm;

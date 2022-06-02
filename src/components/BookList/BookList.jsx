@@ -1,60 +1,61 @@
 import React from "react";
-import { useSelector } from 'react-redux';
-import { Button, Card } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Card } from 'antd'
+import { ToolOutlined, PaperClipOutlined, ClearOutlined } from '@ant-design/icons';
+import 'antd/dist/antd.css';
 import BookForm from "../BookForm/BookForm";
+import './BookList.scss'
+import JointLine from "../JointLine/JointLine";
+import { removeBook } from "../../store/actions";
 const { Meta } = Card;
 
-function BookList() {
+
+export default function BookList() {
     const books = useSelector((store => store.books));
+    const dispatch = useDispatch();
 
-    // const dataSource = books;
+    const edit = () => {
+        console.log('Edit');
+    };
 
-    // const columns = [
-    //     {
-    //         title: 'Image',
-    //         dataIndex: 'image',
-    //         key: 'image',
-    //         render: (image) => (
-    //             <img src={image} alt="image"  width={140} height={200} />
-    //         )
-    //     },
-    //     {
-    //         title: 'Title',
-    //         dataIndex: 'title',
-    //         key: 'title',
-    //     },
-    //     {
-    //         title: 'Author',
-    //         dataIndex: 'author',
-    //         key: 'author',
-    //     },
-    //     {
-    //         title: 'Genre',
-    //         dataIndex: 'genre',
-    //         key: 'genre',
-    //     }
-    // ];
+    const dltBook = (id) => {
+        dispatch(removeBook(id));
+    };
+
+    const addWL = () => {
+        console.log('addWL');
+    };
 
     return (
-        // <div>
-        //     <h1>BookList</h1>
-        //     <Table dataSource={dataSource} columns={columns} />;
-        // </div>
         <div>
-            {books.map(book => (
-                <Card
-                    hoverable
-                    style={{
-                        width: 200,
-                    }}
-                    cover={<img alt="book image" src={book.image} />}
-                >
-                    <Meta title={book.title} description={book.author} />
-                    <Button type="primary">Edit</Button>
-                </Card>
-            ))}
+            <BookForm />
+            <JointLine />
+            <div className="books-container">
+                {books.map(book => (
+                    <div className="card-container">
+                        <Card
+                            hoverable
+                            style={{
+                                width: 240,
+                            }}
+                            cover={<img alt="book image" src={book.image} />}
+                        >
+                            <Meta title={book.title} description={book.author} />
+                            <div className="card-icons">
+                                <button onClick={edit}>
+                                    <ToolOutlined style={{ fontSize: 28, color: 'deepskyblue' }}></ToolOutlined>
+                                </button>
+                                <button onClick={e => {e.preventDefault();dltBook(book.id)}}>
+                                    <ClearOutlined style={{ fontSize: 28, color: 'red' }} />
+                                </button>
+                                <button onClick={addWL}>
+                                    <PaperClipOutlined style={{ fontSize: 28, color: 'green' }} />
+                                </button>
+                            </div>
+                        </Card>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
-
-export default BookList;

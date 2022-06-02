@@ -2,9 +2,8 @@ import * as actions from './actionTypes';
 
 const initialState = {
   books: [],
-  wishList: []
+  wishListBooks: []
 };
-
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -19,6 +18,18 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         books: state.books.filter(b => action.payload.id !== b.id)
+      };
+
+    case actions.ADD_BOOK_TO_WL:
+      return {
+        ...state,
+        wishListBooks: [...state.wishListBooks, action.payload]
+      };
+
+    case actions.REMOVE_BOOK_FROM_WL:
+      return {
+        ...state,
+        wishListBooks: state.wishListBooks.filter(b => action.payload.id !== b.id)
       };
 
     default:

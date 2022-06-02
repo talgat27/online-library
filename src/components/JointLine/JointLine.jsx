@@ -5,7 +5,7 @@ import './JointLine.scss'
 import { Select } from 'antd';
 const { Option } = Select;
 
-export default function JointLine() {
+export default function JointLine({ sorting, catalog }) {
     const books = useSelector((store => store.books));
 
     const onChange = (value) => {
@@ -18,19 +18,20 @@ export default function JointLine() {
     return (
         <div className='jointline-wrapper'>
             <div className='jointline-container'>
-                <p>Total: {books.length}</p>
-                <Select
-                    showSearch
-                    placeholder="Sort by"
-                    optionFilterProp="children"
-                    onChange={onChange}
-                    onSearch={onSearch}
-                    filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-                >
-                    <Option value="alphabet">Alphabet</Option>
-                    <Option value="author">Author</Option>
-                    <Option value="genre">Genre</Option>
-                </Select>
+                <p>Total: {catalog.length}</p>
+                {sorting &&
+                    <Select
+                        showSearch
+                        placeholder="Sort by"
+                        optionFilterProp="children"
+                        onChange={onChange}
+                        onSearch={onSearch}
+                        filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                    >
+                        <Option value="alphabet">Alphabet</Option>
+                        <Option value="author">Author</Option>
+                        <Option value="genre">Genre</Option>
+                    </Select>}
             </div>
         </div>
     )

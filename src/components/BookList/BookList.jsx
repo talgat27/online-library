@@ -6,12 +6,13 @@ import 'antd/dist/antd.css';
 import BookForm from "../BookForm/BookForm";
 import './BookList.scss'
 import JointLine from "../JointLine/JointLine";
-import { removeBook } from "../../store/actions";
+import { removeBook, addBookToWL } from "../../store/actions";
 const { Meta } = Card;
 
 
 export default function BookList() {
     const books = useSelector((store => store.books));
+    const wishListBooks = useSelector((store => store.wishListBooks));
     const dispatch = useDispatch();
 
     const edit = () => {
@@ -22,14 +23,22 @@ export default function BookList() {
         dispatch(removeBook(id));
     };
 
-    const addWL = () => {
-        console.log('addWL');
+    const addWL = (book) => {
+        if (wishListBooks.find(e => e.id === book.id)) {
+            alert('Book is already in WishList!');
+            return;
+        } else {
+            dispatch(addBookToWL(book));
+            alert('Book has been added to WishList!');
+        }
+        
+        console.log('success');
     };
 
     return (
         <div>
             <BookForm />
-            <JointLine />
+            <JointLine sorting={true} catalog={books}/>
             <div className="books-container">
                 {books.map(book => (
                     <div className="card-container">
@@ -48,7 +57,7 @@ export default function BookList() {
                                 <button onClick={e => {e.preventDefault();dltBook(book.id)}}>
                                     <ClearOutlined style={{ fontSize: 28, color: 'red' }} />
                                 </button>
-                                <button onClick={addWL}>
+                                <button onClick={e => {e.preventDefault();addWL(book)}}>
                                     <PaperClipOutlined style={{ fontSize: 28, color: 'green' }} />
                                 </button>
                             </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Input, Button, Select } from 'antd';
 import 'antd/dist/antd.css';
 import './BookForm.scss'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addBook } from "../../store/actions";
 import { v4 as uuid } from 'uuid';
 
@@ -10,6 +10,7 @@ const { Option } = Select;
 
 export default function BookForm() {
     const dispatch = useDispatch();
+    const books = useSelector((store => store.books));
 
     const onFinish = (values) => {
         const newBook = {
@@ -20,7 +21,17 @@ export default function BookForm() {
             image: values.image
         }
 
-        dispatch(addBook(newBook))
+        if(
+            books.find(e => e.title === newBook.title) &&
+            books.find(e => e.author === newBook.author) &&
+            books.find(e => e.genre === newBook.genre) &&
+            books.find(e => e.image === newBook.image)
+        ) {
+            alert('This book already in catalog!');
+            return;
+        } else {
+            dispatch(addBook(newBook));
+        }
 
         console.log('Success:', values);
     };

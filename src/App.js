@@ -6,12 +6,13 @@ import WishList from './components/WishList/WishList';
 import Home from './components/Home/Home';
 
 function App() {
+
   return (
     <div className="App">
       <Header />
       <Routes>
         <Route path="/" element={<Navigate to="/Home/Home" />} />
-        <Route path='/Home/Home' element={<Home />} default />
+        <Route path='/Home/Home' element={<Home />} />
         <Route path='/BookList/BookList' element={<BookList />} />
         <Route path='/WishList/WishList' element={<WishList />} />
       </Routes>

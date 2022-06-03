@@ -14,10 +14,7 @@ export default function BookList() {
     const books = useSelector((store => store.books));
     const wishListBooks = useSelector((store => store.wishListBooks));
     const dispatch = useDispatch();
-
-    const edit = () => {
-        console.log('Edit');
-    };
+    console.log(books);
 
     const dltBook = (id) => {
         dispatch(removeBook(id));
@@ -31,14 +28,14 @@ export default function BookList() {
             dispatch(addBookToWL(book));
             alert('Book has been added to WishList!');
         }
-        
+
         console.log('success');
     };
 
     return (
         <div>
             <BookForm />
-            <JointLine sorting={true} catalog={books}/>
+            <JointLine sorting={true} catalog={books} />
             <div className="books-container">
                 {books.map(book => (
                     <div className="card-container">
@@ -51,13 +48,13 @@ export default function BookList() {
                         >
                             <Meta title={book.title} description={book.author} />
                             <div className="card-icons">
-                                <button onClick={edit}>
+                                <button>
                                     <ToolOutlined style={{ fontSize: 28, color: 'deepskyblue' }}></ToolOutlined>
                                 </button>
-                                <button onClick={e => {e.preventDefault();dltBook(book.id)}}>
+                                <button onClick={e => { e.preventDefault(); dltBook(book.id) }}>
                                     <ClearOutlined style={{ fontSize: 28, color: 'red' }} />
                                 </button>
-                                <button onClick={e => {e.preventDefault();addWL(book)}}>
+                                <button onClick={e => { e.preventDefault(); addWL(book) }}>
                                     <PaperClipOutlined style={{ fontSize: 28, color: 'green' }} />
                                 </button>
                             </div>

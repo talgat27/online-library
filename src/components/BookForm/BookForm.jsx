@@ -3,10 +3,11 @@ import { Form, Input, Button, Select } from 'antd';
 import 'antd/dist/antd.css';
 import './BookForm.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { addBook } from "../../store/actions";
+import { addBook, updateBook } from "../../store/actions";
 import { v4 as uuid } from 'uuid';
 
 const { Option } = Select;
+
 
 export default function BookForm() {
     const dispatch = useDispatch();
@@ -21,19 +22,17 @@ export default function BookForm() {
             image: values.image
         }
 
-        if(
+        if (
             books.find(e => e.title === newBook.title) &&
             books.find(e => e.author === newBook.author) &&
             books.find(e => e.genre === newBook.genre) &&
             books.find(e => e.image === newBook.image)
         ) {
-            alert('This book already in catalog!');
-            return;
+            alert('Book is already in catalog!');
         } else {
             dispatch(addBook(newBook));
         }
 
-        console.log('Success:', values);
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -44,7 +43,7 @@ export default function BookForm() {
         <div className="form-container">
             <h1>Book Form</h1>
             <Form
-            className="form"
+                className="form"
                 name="basic"
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 16 }}
@@ -98,11 +97,8 @@ export default function BookForm() {
                 </Form.Item>
 
                 <Form.Item className="form-btn-container" wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
-                        Add
-                    </Button>{' '}{' '}
-                    <Button type="primary" htmlType="submit">
-                        Edit
+                    <Button type="primary" htmlType="submit" className="btn">
+                        Submit
                     </Button>
                 </Form.Item>
             </Form>

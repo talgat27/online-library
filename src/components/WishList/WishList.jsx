@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch ,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './WishList.scss'
 import { ClearOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
@@ -18,8 +18,10 @@ export default function WishList() {
 
     return (
         <div className='wl-wrapper'>
-            <h1>WishList</h1>
-            <JointLine sorting={false} catalog={wishListBooks}/>
+            <div className='wl-title-wrapper'>
+                <h1>WishList</h1>
+            </div>
+            <JointLine sorting={false} catalog={wishListBooks} />
             <div className='wl-container'>
                 {wishListBooks.map(book => (
                     <div className="card-container">
@@ -32,7 +34,7 @@ export default function WishList() {
                         >
                             <Meta title={book.title} description={book.author} />
                             <div className="card-icons">
-                                <button onClick={e => {e.preventDefault();dltBook(book.id)}}>
+                                <button onClick={e => { e.preventDefault(); dltBook(book.id) }}>
                                     <ClearOutlined style={{ fontSize: 28, color: 'red' }} />
                                 </button>
                             </div>

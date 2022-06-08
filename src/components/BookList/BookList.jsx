@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Card } from 'antd'
 import { ToolOutlined, PaperClipOutlined, ClearOutlined } from '@ant-design/icons';
@@ -10,11 +10,12 @@ import { removeBook, addBookToWL } from "../../store/actions";
 const { Meta } = Card;
 
 
-export default function BookList() {
+export default function BookList({ editBook, setEditBook }) {
     const books = useSelector((store => store.books));
     const wishListBooks = useSelector((store => store.wishListBooks));
     const dispatch = useDispatch();
-    console.log(books);
+    const [isSortedList, setIsSortedList] = useState(false)
+    console.log(isSortedList);
 
     const dltBook = (id) => {
         dispatch(removeBook(id));
@@ -32,10 +33,18 @@ export default function BookList() {
         console.log('success');
     };
 
+    const compare = (a, b) => {
+        if (a.title > b.title) return 1
+        else if (a.title < b.title) return -1
+        else return 0
+    }
+
+    const sortedBooks = books.sort(compare);
+    
     return (
         <div>
-            <BookForm />
-            <JointLine sorting={true} catalog={books} />
+            <BookForm editBook={editBook} setEditBook={setEditBook} />
+            <JointLine sorting={true} catalog={books} isSortedList={isSortedList} setIsSortedList={setIsSortedList} />
             <div className="books-container">
                 {books.map(book => (
                     <div className="card-container">
@@ -43,12 +52,13 @@ export default function BookList() {
                             hoverable
                             style={{
                                 width: 240,
+                                height: 'fit-content'
                             }}
                             cover={<img alt="book image" src={book.image} />}
                         >
                             <Meta title={book.title} description={book.author} />
                             <div className="card-icons">
-                                <button>
+                                <button onClick={e => { e.preventDefault(); setEditBook(book) }}>
                                     <ToolOutlined style={{ fontSize: 28, color: 'deepskyblue' }}></ToolOutlined>
                                 </button>
                                 <button onClick={e => { e.preventDefault(); dltBook(book.id) }}>

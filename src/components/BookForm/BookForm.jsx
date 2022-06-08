@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, Select } from 'antd';
 import 'antd/dist/antd.css';
 import './BookForm.scss'
@@ -8,14 +8,14 @@ import { v4 as uuid } from 'uuid';
 
 const { Option } = Select;
 
-
-export default function BookForm() {
+export default function BookForm({ editBook, setEditBook }) {
     const dispatch = useDispatch();
     const books = useSelector((store => store.books));
+    const [form] = Form.useForm();
 
     const onFinish = (values) => {
         const newBook = {
-            id: uuid(),
+            id: editBook ? editBook.id : uuid(),
             title: values.title,
             author: values.author,
             genre: values.genre,
@@ -29,20 +29,38 @@ export default function BookForm() {
             books.find(e => e.image === newBook.image)
         ) {
             alert('Book is already in catalog!');
+        } else if (editBook) {
+            dispatch(updateBook(editBook.id, newBook))
         } else {
             dispatch(addBook(newBook));
         }
 
+        form.resetFields();
+        setEditBook(null);
     };
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
+    useEffect(() => {
+        form.resetFields();
+        if (!editBook) return;
+        const values = {
+            title: editBook.title,
+            author: editBook.author,
+            genre: editBook.genre,
+            image: editBook.image
+        }
+
+        form.setFieldsValue(values)
+    }, [form, editBook])
+    
     return (
         <div className="form-container">
             <h1>Book Form</h1>
             <Form
+                form={form}
                 className="form"
                 name="basic"
                 labelCol={{ span: 8 }}
